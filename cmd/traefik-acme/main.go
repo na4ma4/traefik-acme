@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/koshatul/traefik-acme/traefik"
 	"github.com/na4ma4/permbits"
+	"github.com/na4ma4/traefik-acme/traefik"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

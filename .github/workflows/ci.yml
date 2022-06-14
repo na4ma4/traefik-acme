@@ -1,4 +1,4 @@
-name: ci
+name: "CI"
 
 on:
   pull_request:
@@ -6,67 +6,18 @@ on:
     branches:
     - '*'
     tags:
-    - '*'
+    - 'v*'
 
 jobs:
-  unit-test:
-    name: unit-test
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ^1
-      id: go
-
-    - name: Set up go env
-      run: export PATH=${PATH}:`go env GOPATH`/bin
-
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v3.1.0
-      with:
-        version: latest
-
-    - name: unit-test
-      run: make test
-
-    - name: ci
-      run: make ci
+  unittest:
+    uses: na4ma4/actions/.github/workflows/unit-test.yml@v1
 
   goreleaser:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs:
-    - unit-test
-    name: goreleaser
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Docker registry login
-      run: ./scripts/docker-login.sh
-      env:
-        INPUT_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        INPUT_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ^1
-      id: go
-
-    - name: Set up go env
-      run: export PATH=${PATH}:`go env GOPATH`/bin
-
-    - name: Run GoReleaser
-      uses: goreleaser/goreleaser-action@v2
-      with:
-        version: latest
-        args: release --rm-dist
-      env:
-        GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
+      - unittest
+    uses: na4ma4/actions/.github/workflows/goreleaser.yml@v1
+    secrets:
+      token: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
+    with:
+      docker: true

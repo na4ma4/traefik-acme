@@ -1,19 +1,17 @@
-DOCKER_REPO := koshatul/traefik-acme
+DOCKER_REPO := ghcr.io/na4ma4/traefik-acme
 
-GO_MATRIX == darwin/amd64 darwin/arm64
+GO_MATRIX += darwin/amd64 darwin/arm64
 GO_MATRIX += linux/amd64
+GO_MATRIX += windows/amd64
+
+DOCKER_PLATFORMS := linux/$(shell go env GOARCH)
+DOCKER_BUILD_ARGS += --build-arg "DOCKER_PLATFORM=$(DOCKER_PLATFORMS)"
 
 APP_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 GIT_HASH ?= $(shell git show -s --format=%h)
 
-
-GO_DEBUG_ARGS   ?= -v -ldflags "-X main.version=$(GO_APP_VERSION)+debug -X main.commit=$(GIT_HASH) -X main.date=$(APP_DATE) -X main.builtBy=makefiles.dev"
-GO_RELEASE_ARGS ?= -v -ldflags "-s -w -X main.version=$(GO_APP_VERSION) -X main.commit=$(GIT_HASH) -X main.date=$(APP_DATE) -X main.builtBy=makefiles.dev"
-
-_GO_GTE_1_14 := $(shell expr `go version | cut -d' ' -f 3 | tr -d 'a-z' | cut -d'.' -f2` \>= 14)
-ifeq "$(_GO_GTE_1_14)" "1"
-_MODFILEARG := -modfile tools.mod
-endif
+GO_DEBUG_ARGS   ?= -v -ldflags "-X main.version=$(GO_APP_VERSION)+debug -X main.commit=$(GIT_HASH) -X main.date=$(APP_DATE) -X main.builtBy=makefiles"
+GO_RELEASE_ARGS ?= -v -ldflags "-X main.version=$(GO_APP_VERSION) -X main.commit=$(GIT_HASH) -X main.date=$(APP_DATE) -X main.builtBy=makefiles -s -w"
 
 -include .makefiles/Makefile
 -include .makefiles/pkg/go/v1/Makefile
@@ -46,10 +44,6 @@ artifacts/upx/%.upx: artifacts/build/%
 .PHONY: docker-run
 docker-run: docker
 	docker run -ti --rm $(DOCKER_REPO):$(DOCKER_TAGS) $(RUN_ARGS)
-
-# .PHONY: run
-# run: artifacts/build/debug/$(GOOS)/$(GOARCH)/traefik-acme
-# 	$< $(RUN_ARGS)
 
 
 ######################
@@ -96,10 +90,10 @@ artifacts/test/issue-14/v2/test1.out: test/issue-14/v2/new-acme.json $(TEST_RUNN
 
 .DELETE_ON_ERROR: artifacts/test/issue-52/cert.pem artifacts/test/issue-52/key.pem
 REGRESSION_TESTS += artifacts/test/issue-52/cert.pem artifacts/test/issue-52/key.pem
-artifacts/test/issue-52/cert.pem artifacts/test/issue-52/key.pem: test/issue-52/acme.json
+artifacts/test/issue-52/cert.pem artifacts/test/issue-52/key.pem: test/issue-52/acme.json docker
 	-@mkdir -p "$(@D)"
 	-@$(RM) "$(@D)/cert.pem" "$(@D)/key.pem"
-	docker run --rm -v "$(shell pwd)/test/issue-52:/input" -v "$(shell pwd)/$(@D):/output" --workdir /output koshatul/traefik-acme:latest --acme "/input/acme.json" test.example.com | tee "$(@).log"
+	docker run --rm -v "$(shell pwd)/test/issue-52:/input" -v "$(shell pwd)/$(@D):/output" --workdir /output $(DOCKER_REPO):$(DOCKER_TAGS) --acme "/input/acme.json" test.example.com | tee "$(@).log"
 	grep "^Certificate" "$(@)"
 
 .PHONY: regression-tests

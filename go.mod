@@ -1,4 +1,4 @@
-module github.com/koshatul/traefik-acme
+module github.com/na4ma4/traefik-acme
 
 go 1.18
 

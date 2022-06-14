@@ -1,7 +1,7 @@
 package traefik_test
 
 import (
-	"github.com/koshatul/traefik-acme/traefik"
+	"github.com/na4ma4/traefik-acme/traefik"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
