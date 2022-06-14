@@ -1,6 +1,6 @@
 # traefik-acme
 
-[![ci](https://github.com/koshatul/traefik-acme/actions/workflows/ci.yml/badge.svg)](https://github.com/koshatul/traefik-acme/actions/workflows/ci.yml)
+[![ci](https://github.com/na4ma4/traefik-acme/actions/workflows/ci.yml/badge.svg)](https://github.com/na4ma4/traefik-acme/actions/workflows/ci.yml)
 
 Extract certificates from acme.json created by traefik.
 
@@ -65,7 +65,7 @@ docker run --rm \
  -v "/docker/traefik/config/:/input" \
  -v "/docker/myservice/certs:/output" \
  --workdir /output \
- koshatul/traefik-acme:latest --acme "/input/acme.json" domain.example.com
+ na4ma4/traefik-acme:latest --acme "/input/acme.json" domain.example.com
 ```
 
 The example expects the `acme.json` to be in `/docker/traefik/config` and to write the `cert.pem` and `key.pem` to `/docker/myservice/certs`.
