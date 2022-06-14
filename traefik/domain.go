@@ -9,7 +9,9 @@ type Domain struct {
 }
 
 // ToStrArray convert a domain into an array of strings.
-func (d *Domain) ToStrArray() (domains []string) {
+func (d *Domain) ToStrArray() []string {
+	domains := []string{}
+
 	if len(d.Main) > 0 {
 		domains = []string{d.Main}
 	}
