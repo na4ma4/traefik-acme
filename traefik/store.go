@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -12,6 +12,7 @@ import (
 type LocalStore map[string]*LocalNamedStore
 
 // LocalNamedStore represents the data managed by the Store.
+//
 //nolint:tagliatelle // importing definition from traefik.
 type LocalNamedStore struct {
 	// Acme           *LocalStore    `json:"acme"`
@@ -29,7 +30,7 @@ func ReadFile(filename, certificateResolver string) (*LocalNamedStore, error) {
 	}
 	defer f.Close()
 
-	file, err := ioutil.ReadAll(f)
+	file, err := io.ReadAll(f)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read file: %w", err)
 	}

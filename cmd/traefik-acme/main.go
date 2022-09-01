@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/na4ma4/permbits"
@@ -69,7 +68,7 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 		// File does not exist, just write it.
 		logrus.WithField("filename", filename).Debugf("file not found, writing")
 
-		if err := ioutil.WriteFile(filename, data, perm); err != nil {
+		if err := os.WriteFile(filename, data, perm); err != nil {
 			return true, fmt.Errorf("unable to write file: %w", err)
 		}
 
@@ -78,14 +77,14 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 		// Don't care if it exists, just write it.
 		logrus.WithField("filename", filename).Debugf("file found, but force enabled")
 
-		err := ioutil.WriteFile(filename, data, perm)
+		err := os.WriteFile(filename, data, perm)
 
 		return true, fmt.Errorf("unable to write file: %w", err)
 	} else {
 		// File exists
 		logrus.WithField("filename", filename).Debugf("file found")
 
-		ld, err := ioutil.ReadFile(filename)
+		ld, err := os.ReadFile(filename)
 		if err != nil {
 			return false, fmt.Errorf("unable to read file for compare: %w", err)
 		}
@@ -98,7 +97,7 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 
 		logrus.WithField("filename", filename).Debugf("file changed, writing")
 
-		if err := ioutil.WriteFile(filename, data, perm); err != nil {
+		if err := os.WriteFile(filename, data, perm); err != nil {
 			return true, fmt.Errorf("unable to write file: %w", err)
 		}
 
