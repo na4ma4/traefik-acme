@@ -87,7 +87,7 @@ var _ = BeforeSuite(func() {
 	acmeDatav1 = buf.Bytes()
 	Expect(acmeDatav1).NotTo(BeEmpty())
 
-	buf.Reset()
+	buf = &bytes.Buffer{}
 
 	acmeTempv2 := traefik.LocalStore{
 		"acme": &acmeTemp,
