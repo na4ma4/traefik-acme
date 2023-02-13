@@ -47,7 +47,7 @@ func ReadBytes(data []byte, certificateResolver string) (*LocalNamedStore, error
 	if err := json.Unmarshal(data, &o); err != nil {
 		// fallback to traefik v1 (no resolver parent key in JSON)
 		v := &LocalNamedStore{}
-		if err := json.Unmarshal(data, v); err == nil {
+		if t1err := json.Unmarshal(data, v); t1err == nil {
 			return v, nil
 		}
 
