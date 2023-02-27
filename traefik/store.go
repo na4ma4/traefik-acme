@@ -16,10 +16,10 @@ type LocalStore map[string]*LocalNamedStore
 //nolint:tagliatelle // importing definition from traefik.
 type LocalNamedStore struct {
 	// Acme           *LocalStore    `json:"acme"`
-	Account        *Account       `json:"Account"`
-	Certificates   []*Certificate `json:"Certificates"`
-	HTTPChallenges map[string]map[string][]byte
-	TLSChallenges  map[string]*Certificate
+	Account        *Account                     `json:"Account"`
+	Certificates   []*Certificate               `json:"Certificates"`
+	HTTPChallenges map[string]map[string][]byte `json:"HTTPChallenges"`
+	TLSChallenges  map[string]*Certificate      `json:"TLSChallenges"`
 }
 
 // ReadFile returns new LocalNamedStore from a filename.

@@ -11,10 +11,10 @@ import (
 
 // Account is used to store lets encrypt registration info.
 type Account struct {
-	Email        string
-	Registration *registration.Resource
-	PrivateKey   []byte
-	KeyType      certcrypto.KeyType
+	Email        string                 `json:"Account"`
+	Registration *registration.Resource `json:"Registration"`
+	PrivateKey   []byte                 `json:"PrivateKey"`
+	KeyType      certcrypto.KeyType     `json:"KeyType"`
 }
 
 // GetEmail returns email.

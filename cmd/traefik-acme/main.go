@@ -62,7 +62,7 @@ func main() {
 	_ = rootCmd.Execute()
 }
 
-//nolint:gocritic,nestif // ifElseChain doesn't seem to be idiomatic here.
+//nolint:nestif // ifElseChain doesn't seem to be idiomatic here.
 func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		// File does not exist, just write it.

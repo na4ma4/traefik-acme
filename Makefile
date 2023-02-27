@@ -92,8 +92,7 @@ artifacts/test/issue-14/v2/test1.out: test/issue-14/v2/new-acme.json $(TEST_RUNN
 REGRESSION_TESTS += artifacts/test/issue-52/cert.pem artifacts/test/issue-52/key.pem
 artifacts/test/issue-52/cert.pem artifacts/test/issue-52/key.pem: test/issue-52/acme.json docker
 	-@mkdir -p "$(@D)"
-	-@$(RM) "$(@D)/cert.pem" "$(@D)/key.pem"
-	docker run --rm --user "$(shell id -u):$(shell id -g)" -v "$(shell pwd)/test/issue-52:/input" -v "$(shell pwd)/$(@D):/output" --workdir /output $(DOCKER_REPO):$(DOCKER_TAGS) --acme "/input/acme.json" test.example.com | tee "$(@).log"
+	docker run --rm --user "$(shell id -u):$(shell id -g)" -v "$(shell pwd)/test/issue-52:/input" -v "$(shell pwd)/$(@D):/output" --workdir /output $(DOCKER_REPO):$(DOCKER_TAGS) --debug --acme "/input/acme.json" test.example.com | tee "$(@).log"
 	grep "^Certificate" "$(@)"
 
 .PHONY: regression-tests
