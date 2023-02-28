@@ -65,7 +65,7 @@ docker run --rm \
  -v "/docker/traefik/config/:/input" \
  -v "/docker/myservice/certs:/output" \
  --workdir /output \
- na4ma4/traefik-acme:latest --acme "/input/acme.json" domain.example.com
+ ghcr.io/na4ma4/traefik-acme:latest --acme "/input/acme.json" domain.example.com
 ```
 
 The example expects the `acme.json` to be in `/docker/traefik/config` and to write the `cert.pem` and `key.pem` to `/docker/myservice/certs`.
