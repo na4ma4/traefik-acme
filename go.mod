@@ -6,7 +6,7 @@ require (
 	github.com/go-acme/lego v2.7.2+incompatible
 	github.com/na4ma4/permbits v0.3.0
 	github.com/onsi/ginkgo v1.16.5
-	github.com/onsi/gomega v1.27.1
+	github.com/onsi/gomega v1.27.2
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
