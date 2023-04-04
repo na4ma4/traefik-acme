@@ -1,12 +1,12 @@
 # This code is licensed under the terms of the MIT license.
 
-## Golden config for golangci-lint v1.51.2
+## Golden config for golangci-lint v1.52.1
 #
 # This is the best config for golangci-lint based on my experience and opinion.
 # It is very strict, but not extremely strict.
 # Feel free to adopt and change it for your needs.
 #
-# Initially imported from https://gist.github.com/maratori/47a4d00457a92aa426dbd48a18776322
+# Imported from https://gist.github.com/maratori/47a4d00457a92aa426dbd48a18776322
 #
 
 run:
@@ -145,7 +145,7 @@ linters-settings:
       shadow:
         # Whether to be strict about shadowing; can be noisy.
         # Default: false
-        strict: false
+        strict: true
 
   nakedret:
     # Make an issue if func has more lines of code than this setting, and it has naked returns.
@@ -299,14 +299,10 @@ issues:
   max-same-issues: 50
 
   exclude-rules:
-    - source: "^//\\s*go:generate\\s"
-      linters: [ lll ]
     - source: "(noinspection|TODO)"
       linters: [ godot ]
     - source: "//noinspection"
       linters: [ gocritic ]
-    - source: "^\\s+if _, ok := err\\.\\([^.]+\\.InternalError\\); ok {"
-      linters: [ errorlint ]
     - path: "_test\\.go"
       linters:
         - bodyclose

@@ -38,7 +38,7 @@ func (a *Account) GetPrivateKey() crypto.PrivateKey {
 }
 
 // GetKeyType used to determine which algo to used.
-func GetKeyType(ctx context.Context, value string) certcrypto.KeyType {
+func GetKeyType(_ context.Context, value string) certcrypto.KeyType {
 	switch value {
 	case "EC256":
 		return certcrypto.EC256

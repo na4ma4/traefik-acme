@@ -68,8 +68,8 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 		// File does not exist, just write it.
 		logrus.WithField("filename", filename).Debugf("file not found, writing")
 
-		if err := os.WriteFile(filename, data, perm); err != nil {
-			return true, fmt.Errorf("unable to write file: %w", err)
+		if werr := os.WriteFile(filename, data, perm); werr != nil {
+			return true, fmt.Errorf("unable to write file: %w", werr)
 		}
 
 		return true, nil
@@ -77,16 +77,18 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 		// Don't care if it exists, just write it.
 		logrus.WithField("filename", filename).Debugf("file found, but force enabled")
 
-		err := os.WriteFile(filename, data, perm)
+		if werr := os.WriteFile(filename, data, perm); werr != nil {
+			return true, fmt.Errorf("unable to write file: %w", werr)
+		}
 
-		return true, fmt.Errorf("unable to write file: %w", err)
+		return true, nil
 	} else {
 		// File exists
 		logrus.WithField("filename", filename).Debugf("file found")
 
-		ld, err := os.ReadFile(filename)
-		if err != nil {
-			return false, fmt.Errorf("unable to read file for compare: %w", err)
+		ld, lerr := os.ReadFile(filename)
+		if lerr != nil {
+			return false, fmt.Errorf("unable to read file for compare: %w", lerr)
 		}
 
 		if i := bytes.Compare(ld, data); i == 0 {
@@ -97,8 +99,8 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 
 		logrus.WithField("filename", filename).Debugf("file changed, writing")
 
-		if err := os.WriteFile(filename, data, perm); err != nil {
-			return true, fmt.Errorf("unable to write file: %w", err)
+		if werr := os.WriteFile(filename, data, perm); werr != nil {
+			return true, fmt.Errorf("unable to write file: %w", werr)
 		}
 
 		return true, nil
@@ -106,7 +108,7 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 }
 
 //nolint:nestif // mainCommand can stand a little complexity.
-func mainCommand(cmd *cobra.Command, args []string) {
+func mainCommand(_ *cobra.Command, args []string) {
 	domain := args[0]
 	updated := false
 
@@ -117,23 +119,23 @@ func mainCommand(cmd *cobra.Command, args []string) {
 	}
 
 	if cert := store.GetCertificateByName(domain); cert != nil {
-		certUpdated, err := writeFile(
+		certUpdated, cerr := writeFile(
 			viper.GetString("cert"),
 			cert.Certificate,
 			permbits.UserRead+permbits.UserWrite+permbits.GroupRead+permbits.OtherRead,
 		)
-		if err != nil {
-			logrus.Errorf("unable to write certificate: %s", err.Error())
+		if cerr != nil {
+			logrus.Errorf("unable to write certificate: %s", cerr.Error())
 			os.Exit(exitCodeError)
 		}
 
-		keyUpdated, err := writeFile(
+		keyUpdated, kerr := writeFile(
 			viper.GetString("key"),
 			cert.Key,
 			permbits.UserRead+permbits.UserWrite,
 		)
-		if err != nil {
-			logrus.Errorf("unable to write key: %s", err.Error())
+		if kerr != nil {
+			logrus.Errorf("unable to write key: %s", kerr.Error())
 			os.Exit(exitCodeError)
 		}
 
