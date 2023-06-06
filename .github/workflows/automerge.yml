@@ -1,0 +1,8 @@
+name: Dependabot auto-approve
+
+on:
+  pull_request:
+
+jobs:
+  dependabot:
+    uses: na4ma4/actions/.github/workflows/dependabot-automerge.yml@main
