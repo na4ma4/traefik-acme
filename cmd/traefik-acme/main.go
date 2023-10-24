@@ -62,7 +62,6 @@ func main() {
 	_ = rootCmd.Execute()
 }
 
-//nolint:nestif // ifElseChain doesn't seem to be idiomatic here.
 func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		// File does not exist, just write it.
@@ -82,29 +81,29 @@ func writeFile(filename string, data []byte, perm os.FileMode) (bool, error) {
 		}
 
 		return true, nil
-	} else {
-		// File exists
-		logrus.WithField("filename", filename).Debugf("file found")
-
-		ld, lerr := os.ReadFile(filename)
-		if lerr != nil {
-			return false, fmt.Errorf("unable to read file for compare: %w", lerr)
-		}
-
-		if i := bytes.Compare(ld, data); i == 0 {
-			logrus.WithField("filename", filename).Debugf("file unchanged")
-
-			return false, nil
-		}
-
-		logrus.WithField("filename", filename).Debugf("file changed, writing")
-
-		if werr := os.WriteFile(filename, data, perm); werr != nil {
-			return true, fmt.Errorf("unable to write file: %w", werr)
-		}
-
-		return true, nil
 	}
+
+	// File exists
+	logrus.WithField("filename", filename).Debugf("file found")
+
+	ld, lerr := os.ReadFile(filename)
+	if lerr != nil {
+		return false, fmt.Errorf("unable to read file for compare: %w", lerr)
+	}
+
+	if i := bytes.Compare(ld, data); i == 0 {
+		logrus.WithField("filename", filename).Debugf("file unchanged")
+
+		return false, nil
+	}
+
+	logrus.WithField("filename", filename).Debugf("file changed, writing")
+
+	if werr := os.WriteFile(filename, data, perm); werr != nil {
+		return true, fmt.Errorf("unable to write file: %w", werr)
+	}
+
+	return true, nil
 }
 
 //nolint:nestif // mainCommand can stand a little complexity.
