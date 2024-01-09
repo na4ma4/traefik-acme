@@ -1,0 +1,43 @@
+name: Cleanup on Closed Pull Request
+
+on:
+  pull_request:
+    types: 
+      - closed
+
+jobs:
+  # this job will only run if the PR has been merged
+  merge_job:
+    name: "Merged"
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'true'
+      - uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          package-version-ids: pr-${{ github.event.pull_request.number }}
+
+  # this job will only run if the PR has been closed without being merged
+  close_job:
+    name: "Closed"
+    if: github.event.pull_request.merged == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'true'
+      - uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          package-version-ids: pr-${{ github.event.pull_request.number }}
