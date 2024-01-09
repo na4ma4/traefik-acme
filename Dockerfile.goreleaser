@@ -1,4 +1,0 @@
-FROM scratch
-LABEL org.opencontainers.image.source https://github.com/na4ma4/traefik-acme
-COPY traefik-acme /
-ENTRYPOINT [ "/traefik-acme" ]

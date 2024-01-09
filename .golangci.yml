@@ -1,12 +1,14 @@
-# This code is licensed under the terms of the MIT license.
+# This code is licensed under the terms of the MIT license https://opensource.org/license/mit
+# Copyright (c) 2021 Marat Reymers
 
-## Golden config for golangci-lint v1.52.1
+## Golden config for golangci-lint v1.55.2
 #
 # This is the best config for golangci-lint based on my experience and opinion.
 # It is very strict, but not extremely strict.
-# Feel free to adopt and change it for your needs.
+# Feel free to adapt and change it for your needs.
 #
 # Imported from https://gist.github.com/maratori/47a4d00457a92aa426dbd48a18776322
+# Modified for na4ma4 repositories.
 #
 
 run:
@@ -32,6 +34,10 @@ linters-settings:
     # Such cases aren't reported by default.
     # Default: false
     check-type-assertions: true
+    # List of functions to exclude from checking, where each entry is a single function to exclude.
+    # See https://github.com/kisielk/errcheck#excluding-functions for details.
+    exclude-functions:
+      - (*go.uber.org/zap.Logger).Sync
 
   exhaustive:
     # Program elements to check for exhaustiveness.
@@ -77,6 +83,9 @@ linters-settings:
     # If lower than 0, disable the check.
     # Default: 40
     statements: 50
+    # Ignore comments when counting lines.
+    # Default false
+    ignore-comments: true
 
   gocognit:
     # Minimal code complexity to report.
@@ -104,14 +113,22 @@ linters-settings:
     # `strconv.ParseInt`, `strconv.ParseUint`, `strconv.ParseFloat`.
     # Default: []
     ignored-functions:
+      - flag.Arg
+      - flag.Duration.*
+      - flag.Float.*
+      - flag.Int.*
+      - flag.Uint.*
       - os.Chmod
-      - os.Mkdir
-      - os.MkdirAll
+      - os.Mkdir.*
       - os.OpenFile
       - os.WriteFile
-      - prometheus.ExponentialBuckets
-      - prometheus.ExponentialBucketsRange
+      - prometheus.ExponentialBuckets.*
       - prometheus.LinearBuckets
+      - cobra.MinimumNArgs
+
+  gomoddirectives:
+    replace-allow-list:
+      - k8s.io/kube-openapi
 
   gomodguard:
     blocked:
@@ -205,6 +222,7 @@ linters:
     - gocheckcompilerdirectives # validates go compiler directive comments (//go:)
     - gochecknoglobals # checks that no global variables exist
     - gochecknoinits # checks that no init functions are present in Go code
+    - gochecksumtype # checks exhaustiveness on Go "sum types"
     - gocognit # computes and checks the cognitive complexity of functions
     - goconst # finds repeated strings that could be replaced by a constant
     - gocritic # provides diagnostics that check for bugs, performance and style issues
@@ -219,6 +237,7 @@ linters:
     - lll # reports long lines
     - loggercheck # checks key value pairs for common logger libraries (kitlog,klog,logr,zap)
     - makezero # finds slice declarations with non-zero initial length
+    - mirror # reports wrong mirror patterns of bytes/strings usage
     - musttag # enforces field tags in (un)marshaled structs
     - nakedret # finds naked returns in functions greater than a specified function length
     - nestif # reports deeply nested if statements
@@ -228,15 +247,19 @@ linters:
     - nolintlint # reports ill-formed or insufficient nolint directives
     - nonamedreturns # reports all named returns
     - nosprintfhostport # checks for misuse of Sprintf to construct a host with port in a URL
+    - perfsprint # checks that fmt.Sprintf can be replaced with a faster alternative
     - predeclared # finds code that shadows one of Go's predeclared identifiers
     - promlinter # checks Prometheus metrics naming via promlint
+    - protogetter # reports direct reads from proto message fields when getters should be used
     - reassign # checks that package variables are not reassigned
     - revive # fast, configurable, extensible, flexible, and beautiful linter for Go, drop-in replacement of golint
     - rowserrcheck # checks whether Err of rows is checked successfully
+    - sloglint # ensure consistent code style when using log/slog
     - sqlclosecheck # checks that sql.Rows and sql.Stmt are closed
     - stylecheck # is a replacement for golint
     - tenv # detects using os.Setenv instead of t.Setenv since Go1.17
     - testableexamples # checks if examples are testable (have an expected output)
+    - testifylint # checks usage of github.com/stretchr/testify
     - testpackage # makes you use a separate _test package
     - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
     - unconvert # removes unnecessary type conversions
@@ -252,11 +275,14 @@ linters:
     #- ginkgolinter # [if you use ginkgo/gomega] enforces standards of using ginkgo and gomega
     #- godox # detects FIXME, TODO and other comment keywords
     #- goheader # checks is file header matches to pattern
+    #- inamedparam # [great idea, but too strict, need to ignore a lot of cases by default] reports interfaces with unnamed method parameters
     #- interfacebloat # checks the number of methods inside an interface
     #- ireturn # accept interfaces, return concrete types
     #- prealloc # [premature optimization, but can be used in some cases] finds slice declarations that could potentially be preallocated
+    #- tagalign # checks that struct tags are well aligned
     #- varnamelen # [great idea, but too many false positives] checks that the length of a variable's name matches its scope
     #- wrapcheck # checks that errors returned from external packages are wrapped
+    #- zerologlint # detects the wrong usage of zerolog that a user forgets to dispatch zerolog.Event
 
     ## disabled
     #- containedctx # detects struct contained context.Context field
@@ -269,6 +295,7 @@ linters:
     #- goerr113 # [too strict] checks the errors handling expressions
     #- gofmt # [replaced by goimports] checks whether code was gofmt-ed
     #- gofumpt # [replaced by goimports, gofumports is not available yet] checks whether code was gofumpt-ed
+    #- gosmopolitan # reports certain i18n/l10n anti-patterns in your Go codebase
     #- grouper # analyzes expression groups
     #- importas # enforces consistent import aliases
     #- maintidx # measures the maintainability index of each function
@@ -312,6 +339,24 @@ issues:
         - gosec
         - noctx
         - wrapcheck
+    - linters: [ staticcheck ]
+      text: "options.AndFrom is deprecated"
+    - linters: [ staticcheck ]
+      text: "The component config package has been deprecated and will be removed in a future release."
+    - path: "cmd/"
+      linters:
+        - gochecknoinits
+        - gochecknoglobals
+    # Exclude `lll` issues for long lines with `go:generate`.
+    - linters:
+        - lll
+      source: '^//\s*\+kubebuilder:'
+    - linters:
+        - godot
+      source: '^//\s*\+optional'
+    - path: "api/v1/"
+      linters:
+        - gochecknoinits
     # Allow dot imports for ginkgo and gomega
     - source: ginkgo|gomega
       linters:

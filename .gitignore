@@ -3,4 +3,4 @@
 /artifacts/
 /vendor/
 /dist/
-test/issue-52/*.pem
+testdata/issue-52/*.pem

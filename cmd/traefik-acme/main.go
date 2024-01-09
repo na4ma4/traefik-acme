@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/na4ma4/permbits"
+	"github.com/na4ma4/go-permbits"
 	"github.com/na4ma4/traefik-acme/traefik"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-//nolint:gochecknoglobals // cobra uses globals in main
 var rootCmd = &cobra.Command{
 	Use:   "traefik-acme <domain>",
 	Short: "Command to extract SSL certificates from traefik acme.json",
@@ -25,7 +24,6 @@ const (
 	exitCodeUpdated = 99
 )
 
-//nolint:gochecknoinits // init is used in main for cobra
 func init() {
 	cobra.OnInitialize(configInit)
 
@@ -121,7 +119,7 @@ func mainCommand(_ *cobra.Command, args []string) {
 		certUpdated, cerr := writeFile(
 			viper.GetString("cert"),
 			cert.Certificate,
-			permbits.UserRead+permbits.UserWrite+permbits.GroupRead+permbits.OtherRead,
+			permbits.MustString("u=rw,a=r"),
 		)
 		if cerr != nil {
 			logrus.Errorf("unable to write certificate: %s", cerr.Error())
