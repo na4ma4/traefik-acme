@@ -12,13 +12,13 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/delete-package-versions@v4
+      - uses: actions/delete-package-versions@v5
         with:
           package-name: 'traefik-acme'
           package-type: 'container'
           min-versions-to-keep: 0
           delete-only-untagged-versions: 'true'
-      - uses: actions/delete-package-versions@v4
+      - uses: actions/delete-package-versions@v5
         with:
           package-name: 'traefik-acme'
           package-type: 'container'
@@ -30,13 +30,13 @@ jobs:
     if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/delete-package-versions@v4
+      - uses: actions/delete-package-versions@v5
         with:
           package-name: 'traefik-acme'
           package-type: 'container'
           min-versions-to-keep: 0
           delete-only-untagged-versions: 'true'
-      - uses: actions/delete-package-versions@v4
+      - uses: actions/delete-package-versions@v5
         with:
           package-name: 'traefik-acme'
           package-type: 'container'
