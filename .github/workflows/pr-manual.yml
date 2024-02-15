@@ -1,0 +1,66 @@
+name: Manual Cleanup on Closed Pull Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      pull_request_number:
+        description: "Pull Request Number"
+        type: string
+      pull_request_merged:
+        type: boolean
+        description: "Pull Request Merged or not"
+
+jobs:
+  # this job will only run if the PR has been merged
+  merge_job:
+    name: "Merged"
+    if: github.event.inputs.pull_request_merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'true'
+      - name: Get Version ID from the Versions List
+        id: version-id
+        env:
+          VERSION_TAG: "pr-${{ github.event.inputs.pull_request_number }}"
+        run: |
+          curl -X GET -H "Authorization: Bearer ${{env.GITHUB_TOKEN}}" ${{github.api_url}}/orgs/${{github.repository_owner}}/packages/container/${{github.event.repository.name}}/versions >> $HOME/versionIds.json
+            echo "VERSION_ID=$(jq -r ".[] | select(.name == \"${{env.VERSION_TAG}}\").id" $HOME/versionIds.json)" >> $GITHUB_OUTPUT
+      - name: Print Version ID
+        run: echo "The selected Version ID is ${{ steps.version-id.outputs.VERSION_ID }}"
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          package-version-ids: '${{ steps.version-id.outputs.VERSION_ID }}'
+
+  # this job will only run if the PR has been closed without being merged
+  close_job:
+    name: "Closed"
+    if: github.event.inputs.pull_request_merged == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          min-versions-to-keep: 0
+          delete-only-untagged-versions: 'true'
+      - name: Get Version ID from the Versions List
+        id: version-id
+        env:
+          VERSION_TAG: "pr-${{ github.event.inputs.pull_request_number }}"
+        run: |
+          curl -X GET -H "Authorization: Bearer ${{env.GITHUB_TOKEN}}" ${{github.api_url}}/orgs/${{github.repository_owner}}/packages/container/${{github.event.repository.name}}/versions >> $HOME/versionIds.json
+            echo "VERSION_ID=$(jq -r ".[] | select(.name == \"${{env.VERSION_TAG}}\").id" $HOME/versionIds.json)" >> $GITHUB_OUTPUT
+      - name: Print Version ID
+        run: echo "The selected Version ID is ${{ steps.version-id.outputs.VERSION_ID }}"
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'traefik-acme'
+          package-type: 'container'
+          package-version-ids: '${{ steps.version-id.outputs.VERSION_ID }}'
