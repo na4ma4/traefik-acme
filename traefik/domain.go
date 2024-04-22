@@ -4,8 +4,8 @@ import "strings"
 
 // Domain holds a domain name with SANs.
 type Domain struct {
-	Main string
-	SANs []string
+	Main string   `json:"Main"`
+	SANs []string `json:"SANs"`
 }
 
 // ToStrArray convert a domain into an array of strings.
