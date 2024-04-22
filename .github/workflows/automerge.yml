@@ -7,3 +7,4 @@ jobs:
   dependabot:
     name: "Dependabot"
     uses: na4ma4/actions/.github/workflows/dependabot-automerge.yml@main
+    secrets: inherit

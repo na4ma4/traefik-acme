@@ -12,6 +12,7 @@ jobs:
   unit-test:
     name: "Unit Test"
     uses: na4ma4/actions/.github/workflows/unit-test.yml@main
+    secrets: inherit
 
   goreleaser:
     name: "Goreleaser"
@@ -19,5 +20,4 @@ jobs:
     needs:
       - unit-test
     uses: na4ma4/actions/.github/workflows/goreleaser.yml@main
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
