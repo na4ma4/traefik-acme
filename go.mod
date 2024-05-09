@@ -1,6 +1,8 @@
 module github.com/na4ma4/traefik-acme
 
-go 1.20
+go 1.22.0
+
+toolchain go1.22.3
 
 require (
 	github.com/go-acme/lego v2.7.2+incompatible
