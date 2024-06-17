@@ -47,8 +47,8 @@ github.com/magiconair/properties v1.8.7 h1:IeQXZAiQcpL9mgcAe1Nu6cX9LLw6ExEHKjN0V
 github.com/magiconair/properties v1.8.7/go.mod h1:Dhd985XPs7jluiymwWYZ0G4Z61jb3vdS329zhj2hYo0=
 github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
-github.com/na4ma4/go-permbits v0.4.0 h1:0+oD8hXc7+1FBEx4sGcnQb+3c3ODdjL6sXgz3MSXGSs=
-github.com/na4ma4/go-permbits v0.4.0/go.mod h1:zOAErdXXC0T5YbVFtWAmIAZJCQe9738v2SIXRJDKpdc=
+github.com/na4ma4/go-permbits v0.5.0 h1:OEi2xvhL/zP8SAztL+EtAvliBpy65ClEvySaqwjC80A=
+github.com/na4ma4/go-permbits v0.5.0/go.mod h1:H6x6cBVERE0vpRiMP95tjjbN/jionjjjzGPqaHTAie4=
 github.com/nxadm/tail v1.4.4/go.mod h1:kenIhsEOeOJmVchQTgglprH7qJGnHDVpk1VPCcaMI8A=
 github.com/nxadm/tail v1.4.8/go.mod h1:+ncqLTQzXmGhMZNUePPaPqPvBxHAIsmXswZKocGu+AU=
 github.com/nxadm/tail v1.4.11 h1:8feyoE3OzPrcshW5/MJ4sGESc5cqmGkGCWlco4l0bqY=

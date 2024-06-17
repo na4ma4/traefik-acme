@@ -1,12 +1,11 @@
 module github.com/na4ma4/traefik-acme
 
 go 1.22.0
-
-toolchain go1.22.3
+toolchain go1.22.4
 
 require (
 	github.com/go-acme/lego v2.7.2+incompatible
-	github.com/na4ma4/go-permbits v0.4.0
+	github.com/na4ma4/go-permbits v0.5.0
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.33.1
 	github.com/sirupsen/logrus v1.9.3
