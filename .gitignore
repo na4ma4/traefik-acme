@@ -4,3 +4,4 @@
 /vendor/
 /dist/
 testdata/issue-52/*.pem
+/artifacts

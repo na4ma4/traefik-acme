@@ -19,7 +19,7 @@
         "domain": {
           "main": "test.example.com"
         },
-        "certificate": "Q2VydGlmaWNhdGU=",
+        "certificate": "Q2VydGlmaWNhdGUgUHVibGljCg==",
         "key": "Q2VydGlmaWNhdGUgS2V5",
         "Store": "default"
       }

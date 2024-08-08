@@ -19,7 +19,7 @@
         "Main": "test.example.com",
         "SANs": null
       },
-      "Certificate": "Q2VydGlmaWNhdGU=",
+      "Certificate": "Q2VydGlmaWNhdGUgUHVibGljCg==",
       "Key": "Q2VydGlmaWNhdGUgS2V5"
     }
   ],
