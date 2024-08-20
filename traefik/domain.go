@@ -33,7 +33,7 @@ func (d *Domain) Contains(domain string) bool {
 		return true
 	}
 
-	if d.SANs != nil && len(d.SANs) > 0 {
+	if len(d.SANs) > 0 {
 		for _, san := range d.SANs {
 			if strings.EqualFold(domain, san) {
 				return true

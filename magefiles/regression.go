@@ -20,7 +20,7 @@ import (
 
 var errTestFailed = errors.New("test failed")
 
-func runDebugCommand(ctx context.Context, title, acmeFile, path string, certMatch, keyMatch []byte, args []string) error {
+func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch, keyMatch []byte, args []string) error {
 	args = append([]string{
 		// --acme="$(<)"
 		"--acme=" + acmeFile,
