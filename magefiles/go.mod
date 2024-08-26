@@ -3,7 +3,7 @@ module github.com/na4ma4/traefik-acme/magefiles
 go 1.22.2
 
 require (
-	github.com/dosquad/mage v0.1.25
+	github.com/dosquad/mage v0.1.26
 	github.com/magefile/mage v1.15.0
 	github.com/na4ma4/go-permbits v0.5.1
 	github.com/princjef/mageutil v1.0.0
