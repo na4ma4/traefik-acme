@@ -12,6 +12,7 @@ import (
 
 	"github.com/dosquad/mage"
 	"github.com/dosquad/mage/helper"
+	"github.com/dosquad/mage/loga"
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
 	"github.com/na4ma4/go-permbits"
@@ -73,7 +74,7 @@ func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch,
 		}
 	}
 
-	helper.PrintInfo("Test Passed: %s", title)
+	loga.PrintInfo("Test Passed: %s", title)
 
 	return nil
 }
@@ -177,7 +178,7 @@ func regressionTestIssue52(ctx context.Context) error {
 		return fmt.Errorf("%w: unable to execute command", err)
 	}
 
-	helper.PrintDebug("Command Output\n%s", out)
+	loga.PrintDebug("Command Output\n%s", out)
 
 	if !helper.FileExists(helper.MustGetArtifactPath("test", "issue-52", "cert.pem")) {
 		return fmt.Errorf("%w: certificate file does not exist", errTestFailed)
@@ -190,7 +191,7 @@ func regressionTestIssue52(ctx context.Context) error {
 		return fmt.Errorf("%w: certificate file does not contain 'Certificate'", errTestFailed)
 	}
 
-	helper.PrintInfo("Test Passed: regression test issue52")
+	loga.PrintInfo("Test Passed: regression test issue52")
 
 	return nil
 }
