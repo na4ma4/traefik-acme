@@ -12,6 +12,11 @@ import (
 
 	"github.com/dosquad/mage"
 	"github.com/dosquad/mage/helper"
+	"github.com/dosquad/mage/helper/bins"
+	"github.com/dosquad/mage/helper/build"
+	"github.com/dosquad/mage/helper/envs"
+	"github.com/dosquad/mage/helper/must"
+	"github.com/dosquad/mage/helper/paths"
 	"github.com/dosquad/mage/loga"
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
@@ -32,9 +37,9 @@ func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch,
 	}, args...)
 
 	sh.Rm(path)
-	helper.MustMakeDir(path, permbits.MustString("ug=rwx,o=rx"))
+	paths.MustMakeDir(path, permbits.MustString("ug=rwx,o=rx"))
 
-	cmdName := helper.GetEnv("RUN_CMD", helper.Must[string](helper.FirstCommandName()))
+	cmdName := envs.GetEnv("RUN_CMD", must.Must[string](build.FirstCommandName()))
 	ct := helper.NewCommandTemplate(true, "./cmd/"+cmdName)
 	{
 		err := shellcmd.Command(fmt.Sprintf("%s %s", ct.OutputArtifact, strings.Join(args, " "))).Run()
@@ -49,7 +54,7 @@ func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch,
 	// ))
 
 	if len(certMatch) != 0 {
-		if !helper.FileExists(path, "cert.pem") {
+		if !paths.FileExists(path, "cert.pem") {
 			return fmt.Errorf("%w: certificate file does not exist", errTestFailed)
 		}
 		body, err := os.ReadFile(filepath.Join(path, "cert.pem"))
@@ -62,7 +67,7 @@ func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch,
 	}
 
 	if len(keyMatch) != 0 {
-		if !helper.FileExists(path, "key.pem") {
+		if !paths.FileExists(path, "key.pem") {
 			return fmt.Errorf("%w: key file does not exist", errTestFailed)
 		}
 		body, err := os.ReadFile(filepath.Join(path, "key.pem"))
@@ -148,28 +153,28 @@ func regressionTestIssue52(ctx context.Context) error {
 		}
 	}
 
-	var cfg *helper.DockerConfig
+	var cfg *build.DockerConfig
 	{
 		var err error
-		cfg, err = helper.DockerLoadConfig()
+		cfg, err = build.DockerLoadConfig()
 		if err != nil {
 			return fmt.Errorf("%w: unable to load docker configuration", err)
 		}
 	}
 
-	sh.Rm(helper.MustGetArtifactPath("test", "issue-52"))
-	helper.MustMakeDir(
-		helper.MustGetArtifactPath("test", "issue-52"),
+	sh.Rm(paths.MustGetArtifactPath("test", "issue-52"))
+	paths.MustMakeDir(
+		paths.MustGetArtifactPath("test", "issue-52"),
 		permbits.MustString("ug=rwx,o=rx"),
 	)
 
 	mg.SerialCtxDeps(ctx, mage.Docker.Build)
 
-	out, err := helper.CommandString(
+	out, err := bins.CommandString(
 		`docker run -t --rm ` +
 			`--user ` + u.Uid + `:` + u.Gid + ` ` +
-			`-v ` + helper.MustGetWD("testdata", "issue-52") + `:/input ` +
-			`-v ` + helper.MustGetArtifactPath("test", "issue-52") + `:/output ` +
+			`-v ` + paths.MustGetWD("testdata", "issue-52") + `:/input ` +
+			`-v ` + paths.MustGetArtifactPath("test", "issue-52") + `:/output ` +
 			`--workdir /output ` +
 			cfg.GetImageRef() + ` ` +
 			`--debug --acme /input/acme.json test.example.com`,
@@ -180,10 +185,10 @@ func regressionTestIssue52(ctx context.Context) error {
 
 	loga.PrintDebug("Command Output\n%s", out)
 
-	if !helper.FileExists(helper.MustGetArtifactPath("test", "issue-52", "cert.pem")) {
+	if !paths.FileExists(paths.MustGetArtifactPath("test", "issue-52", "cert.pem")) {
 		return fmt.Errorf("%w: certificate file does not exist", errTestFailed)
 	}
-	body, err := os.ReadFile(helper.MustGetArtifactPath("test", "issue-52", "cert.pem"))
+	body, err := os.ReadFile(paths.MustGetArtifactPath("test", "issue-52", "cert.pem"))
 	if err != nil {
 		return fmt.Errorf("%w: unable to read certificate: %w", errTestFailed, err)
 	}
