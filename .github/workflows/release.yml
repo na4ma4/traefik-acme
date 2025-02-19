@@ -1,0 +1,12 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  goreleaser:
+    name: "Goreleaser"
+    uses: na4ma4/actions/.github/workflows/goreleaser.yml@main
+    secrets: inherit

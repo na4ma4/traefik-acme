@@ -4,20 +4,10 @@ on:
   pull_request:
   push:
     branches:
-    - '*'
-    tags:
-    - 'v*'
+    - 'main'
 
 jobs:
   unit-test:
     name: "Unit Test"
     uses: na4ma4/actions/.github/workflows/unit-test.yml@main
-    secrets: inherit
-
-  goreleaser:
-    name: "Goreleaser"
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs:
-      - unit-test
-    uses: na4ma4/actions/.github/workflows/goreleaser.yml@main
     secrets: inherit
