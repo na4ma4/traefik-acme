@@ -79,3 +79,7 @@ make test
 ```shell
 ginkgo ./src/...
 ```
+
+## Use Cases
+
+- [jochumdev/acmejson-to-secret](https://github.com/jochumdev/acmejson-to-secret) uses traefik-acme to export TLS certificates from acme.json and then creates kubernetes certificates for them.
