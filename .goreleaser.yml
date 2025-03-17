@@ -65,7 +65,7 @@ nfpms:
   -
     id: traefik-acme-nfpms
     package_name: traefik-acme
-    builds:
+    ids:
       - traefik-acme
     homepage: https://github.com/na4ma4/traefik-acme
     maintainer: na4ma4 <na4ma4@users.noreply.github.com>
