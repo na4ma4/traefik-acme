@@ -1,7 +1,6 @@
 module github.com/na4ma4/traefik-acme
 
 go 1.24.0
-
 require (
 	github.com/go-acme/lego/v4 v4.22.2
 	github.com/na4ma4/go-permbits v0.5.1
@@ -9,7 +8,7 @@ require (
 	github.com/onsi/gomega v1.36.2
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.9.1
-	github.com/spf13/viper v1.20.0
+	github.com/spf13/viper v1.20.1
 )
 
 require (
