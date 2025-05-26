@@ -16,20 +16,22 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-//nolint:gochecknoglobals // acmeDatav1 is a test variable
-var acmeDatav1 []byte
+var (
+	//nolint:gochecknoglobals // acmeDatav1 is a test variable
+	acmeDatav1 []byte
 
-//nolint:gochecknoglobals // acmeDatav2 is a test variable
-var acmeDatav2 []byte
+	//nolint:gochecknoglobals // acmeDatav2 is a test variable
+	acmeDatav2 []byte
 
-//nolint:gochecknoglobals,lll // acmeDatav3 is a test variable
-var acmeDatav3 = []byte(`{"acme":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"example.com","sans":["*.example.com"]},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
+	//nolint:gochecknoglobals,golines // acmeDatav3 is a test variable
+	acmeDatav3 = []byte(`{"acme":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"example.com","sans":["*.example.com"]},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
 
-//nolint:gochecknoglobals,lll // acmeDatav4 is a test variable
-var acmeDatav4 = []byte(`{"acme":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"*.example.com"},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
+	//nolint:gochecknoglobals,golines // acmeDatav4 is a test variable
+	acmeDatav4 = []byte(`{"acme":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"*.example.com"},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
 
-//nolint:gochecknoglobals,lll // acmeDatav5 is a test variable
-var acmeDatav5 = []byte(`{"acme-different":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"example.com","sans":["*.example.com"]},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
+	//nolint:gochecknoglobals,golines // acmeDatav5 is a test variable
+	acmeDatav5 = []byte(`{"acme-different":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"example.com","sans":["*.example.com"]},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
+)
 
 var _ = BeforeSuite(func() {
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
