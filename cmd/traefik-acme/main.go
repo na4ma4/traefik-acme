@@ -39,7 +39,9 @@ func init() {
 	_ = viper.BindPFlag("key", rootCmd.PersistentFlags().Lookup("key"))
 	_ = viper.BindEnv("key", "KEY_FILE")
 
-	rootCmd.PersistentFlags().StringP("certificate-resolver", "r", "acme", "Certificate Resovler name from traefik config")
+	rootCmd.PersistentFlags().StringP(
+		"certificate-resolver", "r", "acme", "Certificate Resovler name from traefik config",
+	)
 	_ = viper.BindPFlag("certificate-resolver", rootCmd.PersistentFlags().Lookup("certificate-resolver"))
 	_ = viper.BindEnv("certificate-resolver", "CERTIFICATE_RESOLVER")
 

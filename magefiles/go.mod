@@ -3,9 +3,9 @@ module github.com/na4ma4/traefik-acme/magefiles
 go 1.24.0
 
 require (
-	github.com/dosquad/mage v0.2.5
+	github.com/dosquad/mage v0.3.2
 	github.com/magefile/mage v1.15.0
-	github.com/na4ma4/go-permbits v0.5.1
+	github.com/na4ma4/go-permbits v0.5.2
 	github.com/princjef/mageutil v1.0.0
 )
 
@@ -26,9 +26,9 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/text v0.25.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
