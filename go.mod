@@ -3,7 +3,7 @@ module github.com/na4ma4/traefik-acme
 go 1.24.0
 
 require (
-	github.com/go-acme/lego/v4 v4.28.1
+	github.com/go-acme/lego/v4 v4.29.0
 	github.com/na4ma4/go-permbits v0.5.3
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.38.2
