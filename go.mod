@@ -6,7 +6,7 @@ require (
 	github.com/go-acme/lego/v4 v4.31.0
 	github.com/na4ma4/go-permbits v0.5.3
 	github.com/onsi/ginkgo v1.16.5
-	github.com/onsi/gomega v1.38.3
+	github.com/onsi/gomega v1.39.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
