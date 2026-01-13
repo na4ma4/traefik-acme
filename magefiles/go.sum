@@ -12,8 +12,8 @@ github.com/dosquad/go-cliversion v0.2.1 h1:RFOvIWlgsNXhLk19zZg5zcnQsPk923VR0n8Qu
 github.com/dosquad/go-cliversion v0.2.1/go.mod h1:nPicrfXqn0zcfzwggktOUie+WrHUNKkVubwEYpPf7UY=
 github.com/dosquad/go-giturl v0.1.1 h1:5rAICr4ycztRDDia/BzcX5QKyQI6vZ3i8HMbZZT9/sw=
 github.com/dosquad/go-giturl v0.1.1/go.mod h1:rlSpkXg6Ra92tAHXDBLvCy6ddWJt/9Go+5dc2WVtZS8=
-github.com/dosquad/mage v0.3.2 h1:8qSq2KMP6gXCeOX7veQiR3JZ9fIwXqepoKMaH46qflk=
-github.com/dosquad/mage v0.3.2/go.mod h1:Tmm5SwOBLh5mw9Zzwllrrr0/DOnqOJmvqEbh/dWIkBg=
+github.com/dosquad/mage v0.3.4 h1:5DU1JMwxTWbvytPa4BcjpLFenzkLQM57c+O+xMW2EMk=
+github.com/dosquad/mage v0.3.4/go.mod h1:Tmm5SwOBLh5mw9Zzwllrrr0/DOnqOJmvqEbh/dWIkBg=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fatih/color v1.9.0/go.mod h1:eQcE1qtQxscV5RaZvpXrrb8Drkc3/DdQ+uUYCNjL+zU=
 github.com/fatih/color v1.18.0 h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
