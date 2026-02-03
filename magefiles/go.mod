@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/dosquad/mage v0.3.2
 	github.com/magefile/mage v1.15.0
-	github.com/na4ma4/go-permbits v0.5.3
+	github.com/na4ma4/go-permbits v0.5.4
 	github.com/princjef/mageutil v1.0.0
 )
 
