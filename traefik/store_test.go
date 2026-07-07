@@ -1,147 +1,215 @@
 package traefik_test
 
 import (
+	"slices"
+	"testing"
+
 	"github.com/na4ma4/traefik-acme/traefik"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
 )
 
-// func runAcmeDataTests(acmeDataBuf []byte) {
-// 	It("should find test.example.com", func() {
-// 		store, err := traefik.ReadBytes(acmeDataBuf, "acme")
+func TestStore_FindTestExampleCom(t *testing.T) {
+	t.Parallel()
 
-// 		Expect(err).NotTo(HaveOccurred())
-// 		Expect(store).NotTo(BeNil())
+	tests := []struct {
+		name string
+		data *[]byte
+	}{
+		{"traefik v1", &acmeDatav1},
+		{"traefik v2", &acmeDatav2},
+	}
 
-// 		cert := store.GetCertificateByName("test.example.com")
-// 		Expect(cert).NotTo(BeNil())
-// 		Expect(cert.Domain.ToStrArray()).To(ContainElement("test.example.com"))
-// 	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 
-// 	It("should also find another-test.example.com", func() {
-// 		store, err := traefik.ReadBytes(acmeDataBuf, "acme")
-
-// 		Expect(err).NotTo(HaveOccurred())
-// 		Expect(store).NotTo(BeNil())
-
-// 		cert := store.GetCertificateByName("another-test.example.com")
-// 		Expect(cert).NotTo(BeNil())
-// 		Expect(cert.Domain.ToStrArray()).To(ContainElement("another-test.example.com"))
-// 	})
-
-// 	It("should not find test2.example.com", func() {
-// 		store, err := traefik.ReadBytes(acmeDataBuf, "acme")
-
-// 		Expect(err).NotTo(HaveOccurred())
-// 		Expect(store).NotTo(BeNil())
-
-// 		cert := store.GetCertificateByName("test2.example.com")
-// 		Expect(cert).To(BeNil())
-// 	})
-// }
-
-var _ = Describe("LocalStore", func() {
-	DescribeTable("should find test.example.com",
-		func(acmeDataBuf *[]byte) {
-			store, err := traefik.ReadBytes(*acmeDataBuf, "acme")
-
-			Expect(err).NotTo(HaveOccurred())
-			Expect(store).NotTo(BeNil())
+			store, err := traefik.ReadBytes(*tt.data, "acme")
+			if err != nil {
+				t.Fatalf("ReadBytes failed: %v", err)
+			}
+			if store == nil {
+				t.Fatal("store is nil")
+			}
 
 			cert := store.GetCertificateByName("test.example.com")
-			Expect(cert).NotTo(BeNil())
-			Expect(cert.Domain.ToStrArray()).To(ContainElement("test.example.com"))
-		},
-		Entry("traefik v1", &acmeDatav1),
-		Entry("traefik v2", &acmeDatav2),
-	)
+			if cert == nil {
+				t.Fatal("cert is nil")
+			}
+			if !slices.Contains(cert.Domain.ToStrArray(), "test.example.com") {
+				t.Errorf("expected domains to contain test.example.com, got %v", cert.Domain.ToStrArray())
+			}
+		})
+	}
+}
 
-	DescribeTable("should also find another-test.example.com",
-		func(acmeDataBuf *[]byte) {
-			store, err := traefik.ReadBytes(*acmeDataBuf, "acme")
+func TestStore_FindAnotherTestExampleCom(t *testing.T) {
+	t.Parallel()
 
-			Expect(err).NotTo(HaveOccurred())
-			Expect(store).NotTo(BeNil())
+	tests := []struct {
+		name string
+		data *[]byte
+	}{
+		{"traefik v1", &acmeDatav1},
+		{"traefik v2", &acmeDatav2},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			store, err := traefik.ReadBytes(*tt.data, "acme")
+			if err != nil {
+				t.Fatalf("ReadBytes failed: %v", err)
+			}
+			if store == nil {
+				t.Fatal("store is nil")
+			}
 
 			cert := store.GetCertificateByName("another-test.example.com")
-			Expect(cert).NotTo(BeNil())
-			Expect(cert.Domain.ToStrArray()).To(ContainElement("another-test.example.com"))
-		},
-		Entry("traefik v1", &acmeDatav1),
-		Entry("traefik v2", &acmeDatav2),
-	)
+			if cert == nil {
+				t.Fatal("cert is nil")
+			}
+			if !slices.Contains(cert.Domain.ToStrArray(), "another-test.example.com") {
+				t.Errorf("expected domains to contain another-test.example.com, got %v", cert.Domain.ToStrArray())
+			}
+		})
+	}
+}
 
-	DescribeTable("should not find test2.example.com",
-		func(acmeDataBuf *[]byte) {
-			store, err := traefik.ReadBytes(*acmeDataBuf, "acme")
+func TestStore_NotFound(t *testing.T) {
+	t.Parallel()
 
-			Expect(err).NotTo(HaveOccurred())
-			Expect(store).NotTo(BeNil())
+	tests := []struct {
+		name string
+		data *[]byte
+	}{
+		{"traefik v1", &acmeDatav1},
+		{"traefik v2", &acmeDatav2},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			store, err := traefik.ReadBytes(*tt.data, "acme")
+			if err != nil {
+				t.Fatalf("ReadBytes failed: %v", err)
+			}
+			if store == nil {
+				t.Fatal("store is nil")
+			}
 
 			cert := store.GetCertificateByName("test2.example.com")
-			Expect(cert).To(BeNil())
-		},
-		Entry("traefik v1", &acmeDatav1),
-		Entry("traefik v2", &acmeDatav2),
-	)
+			if cert != nil {
+				t.Error("expected cert to be nil, got non-nil")
+			}
+		})
+	}
+}
 
-	It("should throw an error on corrupt acme.json data", func() {
-		store, err := traefik.ReadBytes([]byte("blah"), "acme")
+func TestStore_CorruptData(t *testing.T) {
+	t.Parallel()
 
-		Expect(err).To(HaveOccurred())
-		Expect(store).To(BeNil())
-	})
+	store, err := traefik.ReadBytes([]byte("blah"), "acme")
+	if err == nil {
+		t.Error("expected error, got nil")
+	}
+	if store != nil {
+		t.Error("expected store to be nil, got non-nil")
+	}
+}
 
-	It("should read but not find any certs for invalid acme.json but still json", func() {
-		store, err := traefik.ReadBytes([]byte(`{"acme":{}}`), "acme")
+func TestStore_EmptyAcme(t *testing.T) {
+	t.Parallel()
 
-		Expect(err).NotTo(HaveOccurred())
-		Expect(store).NotTo(BeNil())
+	store, err := traefik.ReadBytes([]byte(`{"acme":{}}`), "acme")
+	if err != nil {
+		t.Fatalf("ReadBytes failed: %v", err)
+	}
+	if store == nil {
+		t.Fatal("store is nil")
+	}
+	if certs := store.GetCertificates(); len(certs) != 0 {
+		t.Errorf("expected empty certificates, got %v", certs)
+	}
+}
 
-		Expect(store.GetCertificates()).To(BeEmpty())
-	})
+func TestStore_ResolverNotFound(t *testing.T) {
+	t.Parallel()
 
-	It("should return error if the certificate resolver is not found in acme.json but still json", func() {
-		store, err := traefik.ReadBytes([]byte(`{}`), "acme")
+	store, err := traefik.ReadBytes([]byte(`{}`), "acme")
+	if err == nil {
+		t.Error("expected error, got nil")
+	}
+	if store != nil {
+		t.Error("expected store to be nil, got non-nil")
+	}
+}
 
-		Expect(err).To(HaveOccurred())
-		Expect(store).To(BeNil())
-	})
+func TestStore_WildcardInSans(t *testing.T) {
+	t.Parallel()
 
-	It("should find wildcard in sans", func() {
-		store, err := traefik.ReadBytes(acmeDatav3, "acme")
+	store, err := traefik.ReadBytes(acmeDatav3, "acme")
+	if err != nil {
+		t.Fatalf("ReadBytes failed: %v", err)
+	}
+	if store == nil {
+		t.Fatal("store is nil")
+	}
 
-		Expect(err).NotTo(HaveOccurred())
-		Expect(store).NotTo(BeNil())
+	cert := store.GetCertificateByName("*.example.com")
+	if cert == nil {
+		t.Fatal("cert is nil")
+	}
+	if string(cert.Certificate) != "certificate-for-example.com\n" {
+		t.Errorf("expected certificate %q, got %q", "certificate-for-example.com\n", string(cert.Certificate))
+	}
+	if string(cert.Key) != "key-for-example.com\n" {
+		t.Errorf("expected key %q, got %q", "key-for-example.com\n", string(cert.Key))
+	}
+}
 
-		cert := store.GetCertificateByName("*.example.com")
-		Expect(cert).NotTo(BeNil())
-		Expect(cert.Certificate).To(Equal([]byte("certificate-for-example.com\n")))
-		Expect(cert.Key).To(Equal([]byte("key-for-example.com\n")))
-	})
+func TestStore_WildcardInMain(t *testing.T) {
+	t.Parallel()
 
-	It("should find wildcard in main", func() {
-		store, err := traefik.ReadBytes(acmeDatav4, "acme")
+	store, err := traefik.ReadBytes(acmeDatav4, "acme")
+	if err != nil {
+		t.Fatalf("ReadBytes failed: %v", err)
+	}
+	if store == nil {
+		t.Fatal("store is nil")
+	}
 
-		Expect(err).NotTo(HaveOccurred())
-		Expect(store).NotTo(BeNil())
+	cert := store.GetCertificateByName("*.example.com")
+	if cert == nil {
+		t.Fatal("cert is nil")
+	}
+	if string(cert.Certificate) != "certificate-for-example.com\n" {
+		t.Errorf("expected certificate %q, got %q", "certificate-for-example.com\n", string(cert.Certificate))
+	}
+	if string(cert.Key) != "key-for-example.com\n" {
+		t.Errorf("expected key %q, got %q", "key-for-example.com\n", string(cert.Key))
+	}
+}
 
-		cert := store.GetCertificateByName("*.example.com")
-		Expect(cert).NotTo(BeNil())
-		Expect(cert.Certificate).To(Equal([]byte("certificate-for-example.com\n")))
-		Expect(cert.Key).To(Equal([]byte("key-for-example.com\n")))
-	})
+func TestStore_DifferentResolver(t *testing.T) {
+	t.Parallel()
 
-	It("should find certificate in different named acme store", func() {
-		store, err := traefik.ReadBytes(acmeDatav5, "acme-different")
+	store, err := traefik.ReadBytes(acmeDatav5, "acme-different")
+	if err != nil {
+		t.Fatalf("ReadBytes failed: %v", err)
+	}
+	if store == nil {
+		t.Fatal("store is nil")
+	}
 
-		Expect(err).NotTo(HaveOccurred())
-		Expect(store).NotTo(BeNil())
-
-		cert := store.GetCertificateByName("example.com")
-		Expect(cert).NotTo(BeNil())
-		Expect(cert.Certificate).To(Equal([]byte("certificate-for-example.com\n")))
-		Expect(cert.Key).To(Equal([]byte("key-for-example.com\n")))
-	})
-})
+	cert := store.GetCertificateByName("example.com")
+	if cert == nil {
+		t.Fatal("cert is nil")
+	}
+	if string(cert.Certificate) != "certificate-for-example.com\n" {
+		t.Errorf("expected certificate %q, got %q", "certificate-for-example.com\n", string(cert.Certificate))
+	}
+	if string(cert.Key) != "key-for-example.com\n" {
+		t.Errorf("expected key %q, got %q", "key-for-example.com\n", string(cert.Key))
+	}
+}

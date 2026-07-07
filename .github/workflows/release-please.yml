@@ -1,0 +1,22 @@
+name: "Release"
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: "Release Please"
+    uses: na4ma4/actions/.github/workflows/release-please.yml@main
+    with:
+      artifacts: true
+      platforms: "linux/amd64,linux/arm64,darwin/arm64,windows/amd64"
+      homebrew-repo: "na4ma4/homebrew-tap"
+    secrets:
+      RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}

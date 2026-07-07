@@ -1,3 +1,5 @@
+//go:build mage
+
 package main
 
 import (
@@ -13,7 +15,7 @@ import (
 	"github.com/dosquad/mage"
 	"github.com/dosquad/mage/helper"
 	"github.com/dosquad/mage/helper/bins"
-	"github.com/dosquad/mage/helper/build"
+	"github.com/dosquad/mage/helper/builder"
 	"github.com/dosquad/mage/helper/envs"
 	"github.com/dosquad/mage/helper/must"
 	"github.com/dosquad/mage/helper/paths"
@@ -39,7 +41,7 @@ func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch,
 	sh.Rm(path)
 	paths.MustMakeDir(path, permbits.MustString("ug=rwx,o=rx"))
 
-	cmdName := envs.GetEnv("RUN_CMD", must.Must[string](build.FirstCommandName()))
+	cmdName := envs.GetEnv("RUN_CMD", must.Must[string](builder.FirstCommandName()))
 	ct := helper.NewCommandTemplate(true, "./cmd/"+cmdName)
 	{
 		err := shellcmd.Command(fmt.Sprintf("%s %s", ct.OutputArtifact, strings.Join(args, " "))).Run()
@@ -79,7 +81,7 @@ func runDebugCommand(_ context.Context, title, acmeFile, path string, certMatch,
 		}
 	}
 
-	loga.PrintInfo("Test Passed: %s", title)
+	loga.PrintInfof("Test Passed: %s", title)
 
 	return nil
 }
@@ -153,10 +155,10 @@ func regressionTestIssue52(ctx context.Context) error {
 		}
 	}
 
-	var cfg *build.DockerConfig
+	var cfg *builder.DockerConfig
 	{
 		var err error
-		cfg, err = build.DockerLoadConfig()
+		cfg, err = builder.DockerLoadConfig()
 		if err != nil {
 			return fmt.Errorf("%w: unable to load docker configuration", err)
 		}
@@ -183,7 +185,7 @@ func regressionTestIssue52(ctx context.Context) error {
 		return fmt.Errorf("%w: unable to execute command", err)
 	}
 
-	loga.PrintDebug("Command Output\n%s", out)
+	loga.PrintDebugf("Command Output\n%s", out)
 
 	if !paths.FileExists(paths.MustGetArtifactPath("test", "issue-52", "cert.pem")) {
 		return fmt.Errorf("%w: certificate file does not exist", errTestFailed)
@@ -196,7 +198,7 @@ func regressionTestIssue52(ctx context.Context) error {
 		return fmt.Errorf("%w: certificate file does not contain 'Certificate'", errTestFailed)
 	}
 
-	loga.PrintInfo("Test Passed: regression test issue52")
+	loga.PrintInfof("Test Passed: regression test issue52")
 
 	return nil
 }

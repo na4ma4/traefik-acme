@@ -12,8 +12,6 @@ import (
 	"time"
 
 	"github.com/na4ma4/traefik-acme/traefik"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 )
 
 var (
@@ -33,16 +31,21 @@ var (
 	acmeDatav5 = []byte(`{"acme-different":{"Account":{"Email":"na4ma4@noreply.users.github.com","Registration":{"body":{"status":"valid","contact":["mailto:na4ma4@noreply.users.github.com"]},"uri":"https://acme-v02.api.letsencrypt.org/acme/acct/123456789"},"PrivateKey":"c2VjcmV0LXByaXZhdGUta2V5LWZvci0xMjM0NTY3ODkK","KeyType":"4096"},"Certificates":[{"domain":{"main":"example.com","sans":["*.example.com"]},"certificate":"Y2VydGlmaWNhdGUtZm9yLWV4YW1wbGUuY29tCg==","key":"a2V5LWZvci1leGFtcGxlLmNvbQo=","Store":"default"}]}}`)
 )
 
-var _ = BeforeSuite(func() {
+//nolint:gochecknoinits // init is used to generate test data
+func init() {
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 
 	notBefore := time.Now().Add(-time.Hour)
 	notAfter := time.Now().Add(time.Hour)
 
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
@@ -59,15 +62,21 @@ var _ = BeforeSuite(func() {
 	}
 
 	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &priv.PublicKey, priv)
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 
 	certBuf := &bytes.Buffer{}
 	keyBuf := &bytes.Buffer{}
 
 	err = pem.Encode(certBuf, &pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 	err = pem.Encode(keyBuf, &pem.Block{Type: "RSA PRIVATE KEY", Bytes: x509.MarshalPKCS1PrivateKey(priv)})
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 
 	acmeTemp := traefik.LocalNamedStore{
 		Certificates: []*traefik.Certificate{
@@ -84,10 +93,14 @@ var _ = BeforeSuite(func() {
 
 	buf := &bytes.Buffer{}
 	err = json.NewEncoder(buf).Encode(acmeTemp)
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 
 	acmeDatav1 = buf.Bytes()
-	Expect(acmeDatav1).NotTo(BeEmpty())
+	if len(acmeDatav1) == 0 {
+		panic("acmeDatav1 is empty")
+	}
 
 	buf = &bytes.Buffer{}
 
@@ -95,8 +108,12 @@ var _ = BeforeSuite(func() {
 		"acme": &acmeTemp,
 	}
 	err = json.NewEncoder(buf).Encode(acmeTempv2)
-	Expect(err).NotTo(HaveOccurred())
+	if err != nil {
+		panic(err)
+	}
 
 	acmeDatav2 = buf.Bytes()
-	Expect(acmeDatav2).NotTo(BeEmpty())
-})
+	if len(acmeDatav2) == 0 {
+		panic("acmeDatav2 is empty")
+	}
+}

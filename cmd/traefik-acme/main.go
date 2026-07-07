@@ -5,18 +5,21 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/na4ma4/go-permbits"
 	"github.com/na4ma4/traefik-acme/traefik"
+
+	"github.com/dosquad/go-cliversion"
+	"github.com/na4ma4/go-permbits"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "traefik-acme <domain>",
-	Short: "Command to extract SSL certificates from traefik acme.json",
-	Run:   mainCommand,
-	Args:  cobra.MinimumNArgs(1),
+	Use:     "traefik-acme <domain>",
+	Short:   "Command to extract SSL certificates from traefik acme.json",
+	Run:     mainCommand,
+	Args:    cobra.MinimumNArgs(1),
+	Version: cliversion.Get().VersionString(),
 }
 
 const (

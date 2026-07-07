@@ -10,7 +10,7 @@ type Domain struct {
 
 // ToStrArray convert a domain into an array of strings.
 func (d *Domain) ToStrArray() []string {
-	domains := []string{}
+	domains := make([]string, 0, 1+len(d.SANs))
 
 	if len(d.Main) > 0 {
 		domains = []string{d.Main}

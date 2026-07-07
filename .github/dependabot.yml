@@ -4,18 +4,27 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      docker:
+        patterns:
+          - "*"
 
   - package-ecosystem: "gomod"
-    directory: "/"
+    directories:
+      - "./"
+      - "./magefiles"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "gomod"
-    directory: "/magefiles/"
-    schedule:
-      interval: "weekly"
+    groups:
+      gomod:
+        patterns:
+          - "*"
