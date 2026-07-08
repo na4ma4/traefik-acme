@@ -5,7 +5,6 @@
       "release-type": "go",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
-      "release-as": "v0.5.1",
       "draft": false,
       "prerelease": false
     }
