@@ -14,8 +14,8 @@ github.com/dosquad/go-cliversion v0.3.0 h1:YQG2EOQX9dmfd/+4h3X+ee9nMPqbqxaHhsa/7
 github.com/dosquad/go-cliversion v0.3.0/go.mod h1:Gliu0a5jfTOsxfdXoxhGz3bDHva5gMJPn/Bcuh94sTg=
 github.com/dosquad/go-giturl v0.1.1 h1:5rAICr4ycztRDDia/BzcX5QKyQI6vZ3i8HMbZZT9/sw=
 github.com/dosquad/go-giturl v0.1.1/go.mod h1:rlSpkXg6Ra92tAHXDBLvCy6ddWJt/9Go+5dc2WVtZS8=
-github.com/dosquad/mage v0.4.0 h1:PW/6AjT7trGLHCJ75EfxOwtv/fnC6B/igq1Kt1nr5Sk=
-github.com/dosquad/mage v0.4.0/go.mod h1:y9HcpfWXHcBmgKM999ym+ul84rZqiuFFiSUw/mBB6kI=
+github.com/dosquad/mage v0.5.0 h1:nAM4kyS1EcAdMoLF3siEnA9Ldz6+VKReNnrNyOR+ouI=
+github.com/dosquad/mage v0.5.0/go.mod h1:8rrZZV2TCuT1dd4qsrzetHciNjgjHoBgGBgq5LR5hiA=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fatih/color v1.9.0/go.mod h1:eQcE1qtQxscV5RaZvpXrrb8Drkc3/DdQ+uUYCNjL+zU=
 github.com/fatih/color v1.19.0 h1:Zp3PiM21/9Ld6FzSKyL5c/BULoe/ONr9KlbYVOfG8+w=
@@ -67,8 +67,8 @@ golang.org/x/sys v0.0.0-20191128015809-6d18c012aee9/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20200116001909-b77594299b42/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.46.0 h1:noSf2Fq6F8DBgS+LysIkx7rIExoNHJsxOAtPp4rthXw=
 golang.org/x/sys v0.46.0/go.mod h1:4GL1E5IUh+htKOUEOaiffhrAeqysfVGipDYzABqnCmw=
-golang.org/x/text v0.39.0 h1:UbZz4pLOvn600D6Oh6GGEI6VAmndrEBLv8/6BEXzyus=
-golang.org/x/text v0.39.0/go.mod h1:3UwRclnC2g0TU9x8PZiyfOajCd1zaUNHF9cvqcQZ+ZM=
+golang.org/x/text v0.40.0 h1:Ub2Z6/xjgF1WrYQz2nuITOEegKFtiIy+rieRJ5lHZKs=
+golang.org/x/text v0.40.0/go.mod h1:hpnzDAfGV753zIKo+wk3u1bVKCGPbrnF7+7LBF/UHVY=
 golang.org/x/time v0.12.0 h1:ScB/8o8olJvc+CQPWrK3fPZNfh7qgwCrY0zJmoEQLSE=
 golang.org/x/time v0.12.0/go.mod h1:CDIdPxbZBQxdj6cxyCIdrNogrJKMJ7pr37NYpMcMDSg=
 gopkg.in/VividCortex/ewma.v1 v1.1.1/go.mod h1:TekXuFipeiHWiAlO1+wSS23vTcyFau5u3rxXUSXj710=
